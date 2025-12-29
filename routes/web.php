@@ -67,15 +67,14 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])
         Route::put('settings', [SettingsController::class, 'update'])->name('settings.update');
 
 
-         Route::get('/withdraw-requests', [WithdrawRequestController::class, 'index'])->name('withdraw.index');
-    Route::post('/withdraw-requests/{request}/approve', [WithdrawRequestController::class, 'approve'])->name('withdraw.approve');
-    Route::post('/withdraw-requests/{request}/reject', [WithdrawRequestController::class, 'reject'])->name('withdraw.reject');
+        Route::get('/withdraw-requests', [WithdrawRequestController::class, 'index'])->name('withdraw.index');
+        Route::post('/withdraw-requests/{request}/approve', [WithdrawRequestController::class, 'approve'])->name('withdraw.approve');
+        Route::post('/withdraw-requests/{request}/reject', [WithdrawRequestController::class, 'reject'])->name('withdraw.reject');
     });
 /*****************************************************************************************
  ******************************** advertiser routes **************************************
  *****************************************************************************************/
-Route::group(['prefix' => 'advertiser', 'as' => 'advertiser.', 'middleware'
-=> ['auth', 'role:advertiser']], function () {
+Route::group(['prefix' => 'advertiser', 'as' => 'advertiser.', 'middleware'=> ['auth', 'role:advertiser']], function () {
 
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -121,9 +120,6 @@ Route::prefix('publisher')->name('publisher.')->middleware(['auth', 'role:publis
     /** task execute */
     Route::post('/tasks/{task}/execute', [TaskController::class, 'execute'])->name('tasks.execute');
     Route::post('/tasks/{task}/submit', [TaskController::class, 'submit'])->name('tasks.submit');
-
-
-    Route::get('/earnings', [EarningsController::class, 'index'])->name('earnings.index');
 
     /** publisher profile */
     Route::get('/profile', [PublisherProfileController::class, 'index'])->name('profile.index');

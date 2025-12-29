@@ -26,58 +26,53 @@
             <ul class="space-y-4 text-lg">
                 <li>
                     <a href="{{ route('advertiser.dashboard') }}"
-   class="relative block w-full py-2 px-4 font-medium transition
+                        class="relative block w-full py-2 px-4 font-medium transition
    {{ request()->routeIs('advertiser.dashboard')
-        ? 'bg-green-100 text-green-950 font-semibold before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:bg-green-600'
-        : 'text-gray-100 hover:bg-green-50 hover:text-green-950'
-   }}">
-    Dashboard
-</a>
+       ? 'bg-green-100 text-green-950 font-semibold before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:bg-green-600'
+       : 'text-gray-100 hover:bg-green-50 hover:text-green-950' }}">
+                        Dashboard
+                    </a>
 
                 </li>
                 <li>
-                 
-                    <a href="{{  route('advertiser.profile.index') }}"
-   class="relative block w-full py-2 px-4 font-medium transition
+
+                    <a href="{{ route('advertiser.profile.index') }}"
+                        class="relative block w-full py-2 px-4 font-medium transition
    {{ request()->routeIs('advertiser.profile*')
-        ? 'bg-green-100 text-green-950 font-semibold before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:bg-green-600'
-        : 'text-gray-100 hover:bg-green-50 hover:text-green-950'
-   }}">
-    Profile
-</a>
+       ? 'bg-green-100 text-green-950 font-semibold before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:bg-green-600'
+       : 'text-gray-100 hover:bg-green-50 hover:text-green-950' }}">
+                        Profile
+                    </a>
 
                 </li>
                 <li>
                     <a href="{{ route('advertiser.campaigns.index') }}"
-   class="relative block w-full py-2 px-4 font-medium transition
+                        class="relative block w-full py-2 px-4 font-medium transition
    {{ request()->routeIs('advertiser.campaigns*')
-        ? 'bg-green-100 text-green-950 font-semibold before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:bg-green-600'
-        : 'text-gray-100 hover:bg-green-50 hover:text-green-950'
-   }}">
-    Campaigns
-</a>
+       ? 'bg-green-100 text-green-950 font-semibold before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:bg-green-600'
+       : 'text-gray-100 hover:bg-green-50 hover:text-green-950' }}">
+                        Campaigns
+                    </a>
 
                 </li>
                 <li>
-                   <a href="{{ route('advertiser.tasks.index') }}"
-   class="relative block w-full py-2 px-4 font-medium transition
+                    <a href="{{ route('advertiser.tasks.index') }}"
+                        class="relative block w-full py-2 px-4 font-medium transition
    {{ request()->routeIs('advertiser.tasks*')
-        ? 'bg-green-100 text-green-950 font-semibold before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:bg-green-600'
-        : 'text-gray-100 hover:bg-green-50 hover:text-green-950'
-   }}">
-    Tasks
-</a>
+       ? 'bg-green-100 text-green-950 font-semibold before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:bg-green-600'
+       : 'text-gray-100 hover:bg-green-50 hover:text-green-950' }}">
+                        Tasks
+                    </a>
 
                 </li>
                 <li>
-                   <a href="{{ route('advertiser.invoices.index') }}"
-   class="relative block w-full py-2 px-4 font-medium transition
+                    <a href="{{ route('advertiser.invoices.index') }}"
+                        class="relative block w-full py-2 px-4 font-medium transition
    {{ request()->routeIs('advertiser.invoices*')
-        ? 'bg-green-100 text-green-950 font-semibold before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:bg-green-600'
-        : 'text-gray-100 hover:bg-green-50 hover:text-green-950'
-   }}">
-    Invoices
-</a>
+       ? 'bg-green-100 text-green-950 font-semibold before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:bg-green-600'
+       : 'text-gray-100 hover:bg-green-50 hover:text-green-950' }}">
+                        Invoices
+                    </a>
 
                 </li>
 

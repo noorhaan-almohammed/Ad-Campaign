@@ -19,5 +19,8 @@ class AdminUserSeeder extends Seeder
         );
 
         $admin->assignRole('admin');
+        $admin->wallet()->firstOrCreate([
+            'balance' => 0,
+        ]);
     }
 }

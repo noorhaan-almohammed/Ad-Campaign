@@ -23,22 +23,22 @@ class ProfileController extends Controller
 
     public function update(Request $request)
     {
-        $request->validate([
-            'name'  => 'required|string|max:255',
-            'email' => 'required|email',
+        $data = $request->validate([
+            'name'  => 'nullable|string|max:255',
+            'email' => 'nullable|email',
         ]);
         /**
          * @var User $user
          */
         $user = Auth::user();
-        $user->update($request->only('name', 'email'));
+        $user->update($data);
 
         return back()->with('success', 'Profile updated successfully!');
     }
 
     public function updatePassword(Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
             'current_password' => 'required',
             'password'         => 'required|min:6|confirmed',
         ]);
@@ -51,7 +51,7 @@ class ProfileController extends Controller
             return back()->with('error', 'Current password is incorrect.');
         }
 
-        $user->password = Hash::make($request->password);
+        $user->password = Hash::make($data['password']);
         $user->save();
 
         return back()->with('success', 'Password updated successfully!');

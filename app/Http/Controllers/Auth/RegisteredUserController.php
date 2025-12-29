@@ -29,19 +29,20 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
+        $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'password' => ['required', 'confirmed'],
             'role' => 'required|in:advertiser,publisher',
         ]);
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
         ]);
-        $user->assignRole($request->role);
+        $user->assignRole($data['role']);
+        $user->wallet()->create();
 
         event(new Registered($user));
 
@@ -50,7 +51,7 @@ class RegisteredUserController extends Controller
         /** @var \App\Models\User $user */
 
         $user = Auth::user();
-        
+
         if ($user->hasRole('advertiser')) {
             return redirect('/advertiser/dashboard');
         } elseif ($user->hasRole('publisher')) {

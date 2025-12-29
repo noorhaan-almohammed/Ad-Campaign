@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('campaigns', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->noActionOnDelete(); // المعلن
+            $table->foreignId('user_id')->constrained('users')->noActionOnDelete(); // المعلن
             $table->string('name');
             $table->text('description')->nullable();
             $table->enum('type', ['cpa', 'cpc', 'cpm'])->default('cpa');

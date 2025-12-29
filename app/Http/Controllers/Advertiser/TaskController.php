@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers\Advertiser;
 
+use App\Models\Invoice;
 use App\Models\PublisherTask;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class TaskController
 {
     public function index()
     {
-        $tasks = PublisherTask::where('status','!=','pending')
-        ->whereHas('campaign', function ($q) {
-            $q->where('user_id', Auth::id());
-        })
+        $tasks = PublisherTask::where('status', '!=', 'pending')
+            ->whereHas('campaign', function ($q) {
+                $q->where('user_id', Auth::id());
+            })
             ->latest()
             ->paginate(10);
 
@@ -34,21 +36,39 @@ class TaskController
             abort(403);
         }
 
-        // سحب المبلغ من ميزانية الحملة
-        if ( $task->campaign->remaining_budget < $task->reward ) {
-            return back()->with('error', 'Insufficient campaign budget to approve this task.');
-        }
-        $task->campaign->remaining_budget -= $task->reward;
-        $task->campaign->save();
+        DB::transaction(function () use ($task) {
+            // سحب المبلغ من ميزانية الحملة
+            if ($task->campaign->remaining_budget < $task->reward) {
+                return back()->with('error', 'Insufficient campaign budget to approve this task.');
+            }
+            $task->campaign->remaining_budget -= $task->reward;
+            $task->campaign->save();
 
-        // تحديث المحفظة: نقل المبلغ من locked إلى balance
-        $pub_wallet = $task->publisher->wallet;
-        $pub_wallet->locked_balance -= $task->reward;
-        $pub_wallet->balance += $task->reward;
-        $pub_wallet->save();
+            // تحديث المحفظة: نقل المبلغ من locked إلى balance
+            $pub_wallet = $task->publisher->wallet;
+            $pub_wallet->locked_balance -= $task->reward;
+            $pub_wallet->balance += $task->reward;
+            $pub_wallet->save();
 
-        $task->status = 'approved';
-        $task->save();
+            $task->status = 'approved';
+            $task->save();
+
+            Invoice::create([
+                'user_id'     => $task->publisher_id,
+                'campaign_id' => $task->campaign_id,
+                'amount'      => $task->reward,
+                'status'      => 'paid',
+                'due_date'    => now(),
+            ]);
+
+            Transaction::create([
+                'user_id' => $task->publisher_id,
+                'amount'  => $task->reward,
+                'type'    => 'credit',
+                'reference' => 'Campaign ID: ' . $task->campaign_id,
+                'notes'   => 'Earnings from approved task ID: ' . $task->id,
+            ]);
+        });
 
         return back()->with('success', 'Task approved successfully!');
     }
@@ -58,14 +78,15 @@ class TaskController
         if ($task->campaign->user_id !== Auth::id()) {
             abort(403);
         }
+        DB::transaction(function () use ($task) {
+            // إعادة المبلغ من locked_balance
+            $pub_wallet = $task->publisher->wallet;
+            $pub_wallet->locked_balance -= $task->reward;
+            $pub_wallet->save();
 
-        // إعادة المبلغ من locked_balance
-        $pub_wallet = $task->publisher->wallet;
-        $pub_wallet->locked_balance -= $task->reward;
-        $pub_wallet->save();
-
-        $task->status = 'rejected';
-        $task->save();
+            $task->status = 'rejected';
+            $task->save();
+        });
 
         return back()->with('success', 'Task rejected.');
     }

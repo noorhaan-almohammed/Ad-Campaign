@@ -10,6 +10,8 @@ class CampaignController extends Controller
     public function index()
     {
         $campaigns = Campaign::where('status', 'approved')
+            ->whereDate('start_date', '<=', now())
+            ->whereDate('end_date', '>', now())
             ->whereHas('tasks') // حملات فيها Tasks
             ->whereHas('tasks', function ($q) {
                 $q->select('campaign_id')

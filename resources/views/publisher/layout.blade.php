@@ -38,11 +38,6 @@
                     Campaigns
                 </a>
 
-                <a href="{{ route('publisher.earnings.index') }}"
-                    class="p-2 rounded {{ request()->routeIs('publisher.earnings.*') ? 'bg-gray-700' : '' }}">
-                    Earnings
-                </a>
-
                 <a href="{{ route('logout') }}"
                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                     class="mt-8 p-2 bg-red-600 text-white rounded">

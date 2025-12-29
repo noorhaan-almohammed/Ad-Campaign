@@ -1,7 +1,7 @@
 @extends('advertiser.layout')
 
 @section('content')
-    <div class="max-w-6xl mx-auto">
+    <div class="max-w-6xl mx-auto mb-20">
 
         {{-- Page Header --}}
         <div class="mb-8">
@@ -24,6 +24,9 @@
                         <label class="block text-sm font-medium mb-1">Campaign Name</label>
                         <input type="text" name="name" value="{{ old('name') }}"
                             class="w-full border rounded-lg p-2.5 focus:ring focus:ring-green-200">
+                        @error('name')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     {{-- Budget --}}
@@ -31,6 +34,9 @@
                         <label class="block text-sm font-medium mb-1">Budget (USD)</label>
                         <input type="number" step="0.01" name="budget" value="{{ old('budget') }}"
                             class="w-full border rounded-lg p-2.5 focus:ring focus:ring-green-200">
+                        @error('budget')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
                 </div>
 
@@ -38,6 +44,9 @@
                 <div class="mt-4">
                     <label class="block text-sm font-medium mb-1">Description</label>
                     <textarea name="description" rows="4" class="w-full border rounded-lg p-2.5 focus:ring focus:ring-green-200">{{ old('description') }}</textarea>
+                    @error('description')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 {{-- Dates --}}
@@ -45,11 +54,17 @@
                     <div>
                         <label class="block text-sm font-medium mb-1">Start Date</label>
                         <input type="date" name="start_date" class="w-full border rounded-lg p-2.5">
+                        @error('start_date')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium mb-1">End Date</label>
                         <input type="date" name="end_date" class="w-full border rounded-lg p-2.5">
+                        @error('end_date')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
                 </div>
             </div>
@@ -60,7 +75,9 @@
 
                 <input type="file" name="media_files[]" multiple id="media_input"
                     class="w-full border rounded-lg p-2 bg-gray-50">
-
+                @error('media_files.*')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
                 <div id="preview_container" class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4"></div>
             </div>
             <div class="bg-white rounded-xl shadow p-6">
@@ -72,6 +89,10 @@
                     <div class="flex gap-2">
                         <input type="text" name="media_links[]" class="w-full border rounded-lg p-2"
                             placeholder="https://example.com/ad">
+                        @error('media_links.*')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+
                         <button type="button" class="px-3 bg-red-500 text-white rounded-lg"
                             onclick="this.parentElement.remove()">✕</button>
                     </div>
@@ -93,6 +114,10 @@
                     class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
                     + Add Task
                 </button>
+                @error('tasks')
+                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+
             </div>
             <div class="flex justify-end gap-4">
                 <a href="{{ route('advertiser.campaigns.index') }}"
